@@ -3,11 +3,11 @@
 Separates presentation, application processing, and data management functions.
 """
 
-from typing import Dict, KeysView, Optional, Type, TypeVar, Union
+from typing import Dict, KeysView, Optional, Union
 
 
 class Data:
-    """ Data Store Class """
+    """Data Store Class"""
 
     products = {
         "milk": {"price": 1.50, "quantity": 10},
@@ -22,7 +22,7 @@ class Data:
 
 
 class BusinessLogic:
-    """ Business logic holding data store instances """
+    """Business logic holding data store instances"""
 
     data = Data()
 
@@ -36,7 +36,7 @@ class BusinessLogic:
 
 
 class Ui:
-    """ UI interaction class """
+    """UI interaction class"""
 
     def __init__(self) -> None:
         self.business_logic = BusinessLogic()
@@ -61,32 +61,38 @@ class Ui:
 
 
 def main():
-    ui = Ui()
-    ui.get_product_list()
-    ui.get_product_information("cheese")
-    ui.get_product_information("eggs")
-    ui.get_product_information("milk")
-    ui.get_product_information("arepas")
+    """
+    >>> ui = Ui()
+    >>> ui.get_product_list()
+    PRODUCT LIST:
+    (Fetching from Data Store)
+    milk
+    eggs
+    cheese
+    <BLANKLINE>
+
+    >>> ui.get_product_information("cheese")
+    (Fetching from Data Store)
+    PRODUCT INFORMATION:
+    Name: Cheese, Price: 2.00, Quantity: 10
+
+    >>> ui.get_product_information("eggs")
+    (Fetching from Data Store)
+    PRODUCT INFORMATION:
+    Name: Eggs, Price: 0.20, Quantity: 100
+
+    >>> ui.get_product_information("milk")
+    (Fetching from Data Store)
+    PRODUCT INFORMATION:
+    Name: Milk, Price: 1.50, Quantity: 10
+
+    >>> ui.get_product_information("arepas")
+    (Fetching from Data Store)
+    That product 'arepas' does not exist in the records
+    """
 
 
 if __name__ == "__main__":
-    main()
+    import doctest
 
-### OUTPUT ###
-# PRODUCT LIST:
-# (Fetching from Data Store)
-# cheese
-# eggs
-# milk
-#
-# (Fetching from Data Store)
-# PRODUCT INFORMATION:
-# Name: Cheese, Price: 2.00, Quantity: 10
-# (Fetching from Data Store)
-# PRODUCT INFORMATION:
-# Name: Eggs, Price: 0.20, Quantity: 100
-# (Fetching from Data Store)
-# PRODUCT INFORMATION:
-# Name: Milk, Price: 1.50, Quantity: 10
-# (Fetching from Data Store)
-# That product "arepas" does not exist in the records
+    doctest.testmod()

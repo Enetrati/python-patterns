@@ -29,7 +29,7 @@ class ProductModel(Model):
         __str__ functionality."""
 
         def __str__(self):
-            return "{:.2f}".format(self)
+            return f"{self:.2f}"
 
     products = {
         "milk": {"price": Price(1.50), "quantity": 10},
@@ -40,8 +40,7 @@ class ProductModel(Model):
     item_type = "product"
 
     def __iter__(self):
-        for item in self.products:
-            yield item
+        yield from self.products
 
     def get(self, product):
         try:
@@ -86,7 +85,7 @@ class ConsoleView(View):
         print(printout)
 
     def item_not_found(self, item_type, item_name):
-        print('That {} "{}" does not exist in the records'.format(item_type, item_name))
+        print(f'That {item_type} "{item_name}" does not exist in the records')
 
 
 class Controller:
@@ -100,6 +99,10 @@ class Controller:
         self.view.show_item_list(item_type, items)
 
     def show_item_information(self, item_name):
+        """
+        Show information about a {item_type} item.
+        :param str item_name: the name of the {item_type} item to show information about
+        """
         try:
             item_info = self.model.get(item_name)
         except Exception:
@@ -110,31 +113,40 @@ class Controller:
             self.view.show_item_information(item_type, item_name, item_info)
 
 
+def main():
+    """
+    >>> model = ProductModel()
+    >>> view = ConsoleView()
+    >>> controller = Controller(model, view)
+
+    >>> controller.show_items()
+    PRODUCT LIST:
+    milk
+    eggs
+    cheese
+    <BLANKLINE>
+
+    >>> controller.show_item_information("cheese")
+    PRODUCT INFORMATION:
+    Name: cheese, Price: 2.00, Quantity: 10
+    <BLANKLINE>
+
+    >>> controller.show_item_information("eggs")
+    PRODUCT INFORMATION:
+    Name: eggs, Price: 0.20, Quantity: 100
+    <BLANKLINE>
+
+    >>> controller.show_item_information("milk")
+    PRODUCT INFORMATION:
+    Name: milk, Price: 1.50, Quantity: 10
+    <BLANKLINE>
+
+    >>> controller.show_item_information("arepas")
+    That product "arepas" does not exist in the records
+    """
+
+
 if __name__ == "__main__":
+    import doctest
 
-    model = ProductModel()
-    view = ConsoleView()
-    controller = Controller(model, view)
-    controller.show_items()
-    controller.show_item_information("cheese")
-    controller.show_item_information("eggs")
-    controller.show_item_information("milk")
-    controller.show_item_information("arepas")
-
-
-### OUTPUT ###
-# PRODUCT LIST:
-# cheese
-# eggs
-# milk
-#
-# PRODUCT INFORMATION:
-# Name: Cheese, Price: 2.00, Quantity: 10
-#
-# PRODUCT INFORMATION:
-# Name: Eggs, Price: 0.20, Quantity: 100
-#
-# PRODUCT INFORMATION:
-# Name: Milk, Price: 1.50, Quantity: 10
-#
-# That product "arepas" does not exist in the records
+    doctest.testmod()

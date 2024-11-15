@@ -3,4 +3,12 @@ __pycache__
 .idea
 *.egg-info/
 .tox/
-venv
+env/
+venv/
+.env
+.venv
+.vscode/
+.python-version
+.coverage
+build/
+dist/
